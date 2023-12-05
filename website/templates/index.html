@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dormitorio UniParthenope
+{% endblock %}
+
+{% block body %}
+
+
+
+<!-- Images sliding -->
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+            <div id="carouselExampleIndicators" class="carousel slide">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ url_for('static', filename='img/img-index/university1.png') }}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{{ url_for('static', filename='img/img-index/university2.png') }}" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{{ url_for('static', filename='img/img-index/university3.png') }}" class="d-block w-100" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 slider-banner-1">
+                    <a href="#">
+                        <img src="{{ url_for('static', filename='img/img-index/university3.png') }}" alt="" class="d-block w-100">
+                    </a>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 mt-3 slider-banner-1">
+                    <a href="#">
+                        <img src="{{ url_for('static', filename='img/img-index/university2.png') }}" alt="" class="d-block w-100">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Images sliding -->
+
+
+{% endblock %}
