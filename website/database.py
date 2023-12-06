@@ -27,14 +27,20 @@ class DataBase:
     def commit(self):
         self.cnx.commit()
 
+    def rollback(self):
+        self.cnx.rollback()
+
     def call_procedure(self, procedure, args=()):
 
         self.connect()
         try:
-            self.cursor.callproc(procedure, args)
+            result = self.cursor.callproc(procedure, args)
             self.commit()
+            return result
         except mysql.connector.Error as err:
+            self.rollback()
             mysql_error(err)
+            return None
         finally:
             self.close()
 
@@ -43,12 +49,21 @@ class DataBase:
         try:
             _query = (query)
             self.cursor.execute(_query, args)
+            result = self.cursor.fetchall()
             self.commit()
+            return result
         except mysql.connector.Error as err:
+            self.rollback()
             mysql_error(err)
-            return err
+            return None
         finally:
             self.close()
 
-        return self.cursor
 
+UserDB = DataBase('admin', 'admin')
+
+AdminDB = DataBase('admin', 'admin')
+
+ReceptionDB = DataBase('reception', 'reception')
+
+CleanerDB = DataBase('cleaner', 'cleaner')
