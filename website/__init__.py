@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from datetime import timedelta
 from flask_session import Session
 
@@ -14,9 +14,11 @@ def create_app():
     from .home import home
     from .auth import auth
     from .rooms import rooms
+    from .profile import profile
 
     app.register_blueprint(home)
     app.register_blueprint(auth)
     app.register_blueprint(rooms)
+    app.register_blueprint(profile)
 
     return app

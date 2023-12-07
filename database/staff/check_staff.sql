@@ -4,3 +4,4 @@ BEGIN
     FROM staff s
     WHERE s_fiscal_code=username and s.s_password=sha2(password, 256);
 end;
+commit;

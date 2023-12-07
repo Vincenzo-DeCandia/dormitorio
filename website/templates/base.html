@@ -99,14 +99,19 @@
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/rooms">Rooms</a>
+                    <a class="nav-link" href="/rooms">Camere</a>
                 </li>
+                {% if role != 'user' %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contacts</a>
+                   <a class="nav-link" href="/operation">Operazioni</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/contacts">Contatti</a>
                 </li>
             </ul>
 
-            {% if val_session == False %}
+{% if not val_session %}
 
 <div id="login_button" class="mb-2 mb-lg-0">
     <a class="btn btn-primary me-2" href="/login" role="button">Login</a>
@@ -124,10 +129,24 @@
                         </svg>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="/profile">Profilo</a></li>
+
+                        {% if role != 'user' %}
+
+                        <li><a class="dropdown-item" href="/settings">Impostazioni</a></li>
+                        <li><a class="dropdown-item" href="#"></a></li>
+
+
+                        {% else %}
+
+                        <li><a class="dropdown-item" href="/settings">Impostazioni</a></li>
+                        <li><a class="dropdown-item" href="/reservation">Storico prenotazioni</a></li>
+                        <li><a class="dropdown-item" href="/mypayments">Storico pagamenti</a></li>
+
+                        {% endif %}
+
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>
