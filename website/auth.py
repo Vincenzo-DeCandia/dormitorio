@@ -1,4 +1,3 @@
-import mysql.connector
 from flask import Blueprint, render_template, redirect, request
 import requests
 from website.database import UserDB, AdminDB
@@ -22,6 +21,7 @@ def login():
 
         fiscal_code = request.form.get('cod_fisc')
         password = request.form.get('password')
+        remember = request.form.get('remember')
 
         staff = UserDB.call_procedure('check_staff', (fiscal_code, password, 0))
         print(staff)
@@ -29,7 +29,8 @@ def login():
             staff_exist = staff[2]
             if staff_exist:
                 staff_info = AdminDB.query('SELECT id_staff, role FROM staff WHERE s_fiscal_code=%s', [fiscal_code])
-                set_session(staff_info[0][0], staff_info[0][1])
+
+                set_session(staff_info[0][0], staff_info[0][1], remember)
                 return redirect('/')
 
         # Check the student into the database
@@ -42,7 +43,7 @@ def login():
             if user_exist:
                 info = UserDB.query('SELECT id_user, role FROM user WHERE fiscal_code=%s', [fiscal_code])
                 print(info)
-                set_session(info[0][0], info[0][1])
+                set_session(info[0][0], info[0][1], remember)
                 return redirect('/')
             else:
                 # If student doesn't exist, check credentials with UniParthenope API
@@ -64,7 +65,7 @@ def login():
                         return render_template('login.html', msg='Errore durante la creazione', val_session=get_session())
                     else:
                         user_id = UserDB.query('SELECT id FROM user WHERE fiscal_code=%s', [fiscal_code])
-                        set_session(user_id, role)
+                        set_session(user_id, role, remember)
                         return redirect('/')
 
                 else:
@@ -78,7 +79,6 @@ def login():
 # Route for logout
 @auth.route('/logout')
 def logout():
-    # Remove session and redirect to login page
     delete_session()
     return redirect('/login')
 

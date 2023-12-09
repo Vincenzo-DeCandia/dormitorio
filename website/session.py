@@ -4,10 +4,14 @@ import os
 import base64
 
 
-def set_session(user_id, role):
+def set_session(user_id, role, remember):
     session['session_id'] = base64.b64encode(os.urandom(32)).decode('utf-8')
     session['user_id'] = user_id
     session['role'] = role
+    if remember:
+        session.permanent = True
+    else:
+        session.permanent = False
 
 
 def get_session():
@@ -18,9 +22,11 @@ def get_session():
 
 
 def delete_session():
-    session.pop('session_id', None)
-    session.pop('user_id', None)
-    session.pop('role', None)
+    session.clear()
+
+
+def get_perm_session():
+    return session.permanent
 
 
 def get_role():
