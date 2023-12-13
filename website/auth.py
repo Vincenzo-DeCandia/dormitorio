@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, request
+from flask import Blueprint, render_template, request
 import requests
 from website.database import UserDB, AdminDB
 from website.session import *
@@ -18,7 +18,7 @@ def login():
 
     # If request method is POST and the user is not logged in get the data from the form
     if request.method == 'POST' and not get_session():
-
+        print('POST LOGIN')
         fiscal_code = request.form.get('cod_fisc')
         password = request.form.get('password')
         remember = request.form.get('remember')
@@ -48,7 +48,7 @@ def login():
             else:
                 # If student doesn't exist, check credentials with UniParthenope API
                 response = requests.get('https://api.uniparthenope.it/UniparthenopeApp/v1/login', auth=(fiscal_code, password))
-
+                print(True)
                 # If GET request return 200, store user into database and then redirect to homepage
                 if response.status_code == 200:
 

@@ -10,31 +10,31 @@ create table promotion
 
 create table room_type
 (
-    name_type    varchar(10) not null
-        primary key,
+    id_type     int auto_increment primary key,
+    name_type    varchar(20) not null,
     price        float       not null,
     description  varchar(400) not null
 );
 
 create table apply_promotion
 (
-    id_promotion int     auto_increment,
-    name_type    varchar(10) not null,
+    id_promotion int not null,
+    id_type    int not null,
     description  varchar(400) not null,
-    primary key (id_promotion, name_type),
+    primary key (id_promotion, id_type),
     constraint FK_promotion_id
         foreign key (id_promotion) references promotion (id_promotion),
     constraint FK_promotion_name_type
-        foreign key (name_type) references room_type (name_type)
+        foreign key (id_type) references room_type (id_type)
 );
 
 create table room
 (
     room_number char(3)     not null
         primary key,
-    name_type   varchar(10) null,
-    constraint FK_name_room
-        foreign key (name_type) references room_type (name_type)
+    id_type     int not null,
+    constraint FK_id_room_type
+        foreign key (id_type) references room_type (id_type)
 );
 
 create table staff
@@ -42,7 +42,7 @@ create table staff
     id_staff      int     AUTO_INCREMENT
         primary key,
     s_fiscal_code char(16)    unique ,
-    s_password    varchar(20) not null,
+    s_password    varchar(64) not null,
     s_name        varchar(20) null,
     s_surname     varchar(20) null,
     s_email       varchar(20) unique ,
@@ -80,7 +80,7 @@ create table user
     matriculation_number char(10)    unique not null,
     email                varchar(20) unique null,
     fiscal_code          char(16)    not null,
-    password             varchar(20) not null,
+    password             varchar(64) not null,
     name                 varchar(20) not null,
     surname              varchar(20) not null,
     gender               char(1)        null,
@@ -112,12 +112,12 @@ create table reservation
     start_date           datetime   null,
     end_date             datetime   null,
     id_user              int    not null,
-    name_type            varchar(10) not null,
+    id_type              int not null,
     room_number          char(3)     not null,
     constraint FK_book_id_user
         foreign key (id_user) references user (id_user),
-    constraint FK_book_name_type
-        foreign key (name_type) references room_type (name_type),
+    constraint FK_book_id_type
+        foreign key (id_type) references room_type (id_type),
     constraint FK_book_room_number
         foreign key (room_number) references room (room_number)
 );

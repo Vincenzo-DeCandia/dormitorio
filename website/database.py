@@ -67,3 +67,4 @@ AdminDB = DataBase('admin', 'admin')
 ReceptionDB = DataBase('reception', 'reception')
 
 CleanerDB = DataBase('cleaner', 'cleaner')
+

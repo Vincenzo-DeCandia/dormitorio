@@ -49,13 +49,10 @@
 }
 
 .transparent-navbar {
-    background-color: rgba(107, 168, 192, 0.63); /* Adjust the alpha value for opacity */
+    background-color: rgba(28, 103, 184, 0.67); /* Adjust the alpha value for opacity */
 }
 
 
-.modal-dialog {
-    width: 300px;
-}
 .modal-footer {
     height: 70px;
     margin: 0;
@@ -71,4 +68,19 @@
 .input-group-addon {
     color: #fff;
     background: #3276B1;
+}
+
+
+.wrapper {
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.page-header, .page-footer {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.page-body {
+  flex-grow: 1;
 }

@@ -19,11 +19,13 @@ def create_app():
     from .auth import auth
     from .rooms import rooms
     from .profile import profile
+    from .management import management
 
     app.register_blueprint(home)
     app.register_blueprint(auth)
     app.register_blueprint(rooms)
     app.register_blueprint(profile)
+    app.register_blueprint(management)
 
     @socketio.on('disconnect')
     def disconnect_user():

@@ -5,9 +5,8 @@ import base64
 
 
 def set_session(user_id, role, remember):
-    session['session_id'] = base64.b64encode(os.urandom(32)).decode('utf-8')
-    session['user_id'] = user_id
-    session['role'] = role
+    session_id = base64.b64encode(os.urandom(32)).decode('utf-8')
+    session.update({'session_id': session_id, 'user_id': user_id, 'role': role})
     if remember:
         session.permanent = True
     else:
@@ -37,41 +36,14 @@ def user_id():
     return session.get('user_id')
 
 
-def logged_as_cleaner(f):
-    @wraps(f)
-    def decorated_func(*args, **kwargs):
-        if get_session() and get_role() == 'cleaner':
-            return f(*args, **kwargs)
-        else:
-            return redirect('/forbidden')
-    return decorated_func
+def logged_in(arg_list):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if get_session() and get_role() in arg_list:
+                return f(*args, **kwargs)
+            else:
+                return redirect('404')
+        return wrapper
+    return decorator
 
-
-def logged_as_reception(f):
-    @wraps(f)
-    def decorated_func(*args, **kwargs):
-        if get_session() and get_role() == 'reception':
-            return f(*args, **kwargs)
-        else:
-            return redirect('/forbidden')
-    return decorated_func
-
-
-def logged_as_admin(f):
-    @wraps(f)
-    def decorated_func(*args, **kwargs):
-        if get_session() and get_role() == 'admin':
-            return f(*args, **kwargs)
-        else:
-            return redirect('/forbidden')
-    return decorated_func
-
-
-def logged_as_user(f):
-    @wraps(f)
-    def decorated_func(*args, **kwargs):
-        if get_session() and get_role() == 'user':
-            return f(*args, **kwargs)
-        else:
-            return redirect('/login')
-    return decorated_func
