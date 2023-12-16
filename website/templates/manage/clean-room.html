@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+{% if rooms %}
+<div class="d-flex justify-content-center">
+  <form method="post" action="{{ url_for('management.clean_room')}}">
+    <ul class="list-group list-group-flush w-25">
+      <li class="list-inline-item h3">Camere non pulite</li>
+      {% for room in rooms %}
+      <li class="list-group-item">
+        <input name="checkRoom" id="checkRoom" class="form-check-input me-1" type="checkbox" value="{{room[0]}}" aria-label="..." />
+        <label class="form-check-label" for="checkRoom">{{room[0]}}</label>
+      </li>
+      {% endfor %}
+    </ul>
+    <div>
+      <button type="submit">Invia</button>
+    </div>
+  </form>
+</div>
+{% else %}
+<div class="w-25 alert alert-info d-flex justify-content-center start-50 translate-middle position-absolute" style="margin-top: 8rem" role="alert">
+  Non ci sono camere da pulire
+</div>
+
+{% endif %}
+{% endblock %}

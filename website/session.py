@@ -33,7 +33,7 @@ def get_role():
 
 
 def user_id():
-    return session.get('user_id')
+    return int(session.get('user_id'))
 
 
 def logged_in(arg_list):

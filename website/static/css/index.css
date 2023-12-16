@@ -34,17 +34,6 @@
     background: #FF6F61;
 }
 
-button.btn {
-    color: #ffffff;
-    background: #000000;
-    border: 1px solid #000000;
-}
-
-button.btn:hover {
-    color: #ffffff;
-    background: #FF6F61;
-    border-color: #FF6F61;
-}
 
 .back-to-top {
     position: fixed;

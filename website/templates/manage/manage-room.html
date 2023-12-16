@@ -19,13 +19,21 @@
         <td>{{rooms[1]}}</td>
         <td>{{rooms[3]}}</td>
         <td>{{rooms[2]}}</td>
-        <td>
-          <a class="d-flex justify-content-center mt-1">
+        <td class="d-flex justify-content-center mt-1">
+          <a class="me-2 text-black" id="modRoom" data-id="{{rooms[0]}}" type="button" data-bs-toggle="modal" data-bs-target="#_modalRoom_">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
               <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
               <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
             </svg>
           </a>
+          <form id="deleteRoomForm" action="{{ url_for('management.manage_room')}}" method="post">
+            <a id="deleteRoom" href="#" onclick="submit_delete()">
+              <input hidden name="deleteRoom" value="{{rooms[0]}}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+              </svg>
+            </a>
+          </form>
         </td>
       </tr>
       {% endfor %}
@@ -35,6 +43,48 @@
       <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Aggiungi</a>
     </div>
 </div>
+
+
+
+
+<div class="modal fade" id="_modalRoom_" tabindex="-1" aria-labelledby="modalRoom" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+
+    <form method="post" action="{{ url_for('management.manage_room')}}" class="needs-validation" novalidate="" autocomplete="off" enctype="multipart/form-data">
+      <input id="mod-id-room" hidden name="mod-id-room" required>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalRoom">Modifica camera</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+              <label for="room-description" class="col-form-label">Descrizione:</label>
+              <textarea name="mod-room-description" class="form-control" id="mod-room-description" required></textarea>
+            </div>
+            <label for="room-name" class="col-form-label">Prezzo:</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">€</span>
+              <input name="mod-room-price" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+              <span class="input-group-text">.00</span>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          <button value="modify" name="save-room" type="submit" class="btn btn-primary">Salva</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+
+
+
+
+
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -68,12 +118,18 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-          <button name="save-room" type="submit" class="btn btn-primary">Salva</button>
+          <button value="insert" name="save-room" type="submit" class="btn btn-primary">Salva</button>
         </div>
       </div>
     </form>
 
   </div>
 </div>
+
+{% endblock %}
+
+{% block script_body %}
+
+<script src="{{ url_for('static', filename='js/manage_room.js') }}"></script>
 
 {% endblock %}
