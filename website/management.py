@@ -1,19 +1,27 @@
-import os
-
-from s3transfer import manager
-
 from website.files import upload_file
 
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, jsonify
 from website.database import UserDB
 from website.session import get_session, get_role, logged_in, user_id
 
 management = Blueprint('management', __name__)
 
 
-@management.route('/manage-room', methods=['GET', 'POST'])
-# @logged_in(['reception', 'admin'])
+@management.route('/manage-room')
+@logged_in(['reception', 'admin'])
 def manage_room():
+    return render_template('manage/manage-room.html', val_session=get_session(), role=get_role())
+
+
+@management.route('/manage-room/number')
+@logged_in(['reception', 'admin'])
+def manage_room_number():
+    pass
+
+
+@management.route('/manage-room/type', methods=['GET', 'POST'])
+@logged_in(['reception', 'admin'])
+def manage_room_type():
     if request.method == 'POST' and request.form.get('save-room') == 'insert':
         room_name = request.form.get('room-name')
         room_description = request.form.get('room-description')
@@ -32,11 +40,11 @@ def manage_room():
         UserDB.query('DELETE FROM room_type WHERE id_type=%s', [id_room])
 
     room = UserDB.query('SELECT * FROM room_type')
-    return render_template('manage/manage-room.html', val_session=get_session(), room=room, role=get_role())
+    return render_template('manage/manage-room_type.html', val_session=get_session(), room=room, role=get_role())
 
 
 @management.route('/clean-room', methods=['GET', 'POST'])
-# @logged_in(['cleaner'])
+@logged_in(['cleaner', 'admin'])
 def clean_room():
     if request.method == 'POST':
         cleaned_room = request.form.get('checkRoom')
@@ -47,20 +55,32 @@ def clean_room():
 
 
 @management.route('/manage-promotion', methods=['GET', 'POST'])
+@logged_in(['reception', 'admin'])
 def manage_promotion():
-    name_room = request.form.get('name-room')
-    name_promotion = request.form.get('promotion-id')
-    start_date = request.form.get('start-date')
-    end_date = request.form.get('end-date')
-    discount = request.form.get('discount')
-    description = request.form.get('desc-promotion')
 
-    if request.method == 'POST' and request.form.get('submitPromotion') == 'insert':
-        UserDB.call_procedure('add_promotion', (name_room, name_promotion, start_date, end_date, discount, description))
-    elif request.method == 'POST' and request.form.get('submitPromotion') == 'modify':
-        id_promotion = int(request.form.get('id-promotion'))
-        UserDB.call_procedure('modify_promotion', (id_promotion, name_room, name_promotion, start_date, end_date, discount, description))
-    else:
-        id_promotion = int(request.form.get('id-promotion'))
+    if request.method == 'POST' and request.form.get('deletePromotion'):
+        id_promotion = request.form.get('deletePromotion')
         UserDB.call_procedure('delete_promotion', [id_promotion])
-    return render_template('manage/manage-promotion.html', val_session=get_session(), role=get_role())
+        print('promotion deleted')
+    elif request.method == 'POST':
+        id_promotion = request.json['promotion_id']
+        name_room = request.json['room_name']
+        name_promotion = request.json['promotion_name']
+        start_date = request.json['promotion_start']
+        end_date = request.json['promotion_end']
+        discount = request.json['promotion_discount']
+        print(id_promotion, name_room, name_promotion, start_date, end_date, discount)
+        if not id_promotion:
+            UserDB.call_procedure('add_promotion', (name_promotion, start_date, end_date, discount))
+            id_promotion = UserDB.query('SELECT * FROM promotion where promotion_name = %s', [name_promotion])[0][0]
+            for room in name_room:
+                print(room)
+                UserDB.call_procedure('add_promotion_room', (id_promotion, room))
+        else:
+            UserDB.call_procedure('modify_promotion', (id_promotion, name_promotion, start_date, end_date, discount))
+        return {'response': True}
+
+    promotion = UserDB.query('SELECT * FROM view_promotion')
+    return render_template('manage/manage-promotion.html', val_session=get_session(), role=get_role(), promotions=promotion)
+
+

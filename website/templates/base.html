@@ -117,14 +117,14 @@
                     {% if role == 'admin' %}
                         <li><a class="dropdown-item" href="/staff-register">Registrazione staff</a></li>
                         <li><a class="dropdown-item" href="/news-management">Gestione notizie</a></li>
-                        <li><a class="dropdown-item" href="/promotion-management">Gestione promozioni</a></li>
+                        <li><a class="dropdown-item" href="/manage-promotion">Gestione promozioni</a></li>
 
                     {% endif %}
                     {% if role != 'cleaner' %}
                         <li><a class="dropdown-item" href="/pay-management">Gestione utenti</a></li>
-                        <li><a class="dropdown-item" href="/rooms-management">Gestione camere</a></li>
-                        <li><a class="dropdown-item" href="/user-management">Gestione utenti</a></li>
-                        <li><a class="dropdown-item" href="/reservation-management">Gestione prenotazioni</a></li>
+                        <li><a class="dropdown-item" href="/manage-room">Gestione camere</a></li>
+                        <li><a class="dropdown-item" href="/manage-user">Gestione utenti</a></li>
+                        <li><a class="dropdown-item" href="/manage-reservation">Gestione prenotazioni</a></li>
                     {% endif %}
                     {% if role != 'reception' %}
                         <li><a class="dropdown-item" href="/clean-room">Pulizia camere</a></li>
