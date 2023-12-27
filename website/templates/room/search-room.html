@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container mt-5">
+    {% for room in rooms %}
+    <div class="card mb-3 mx-auto" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ url_for('static', filename='img/img-room/id-' + room[0] + '/1.jpg')}}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{room[1]}}</h5>
+                    <form hidden action="{{url_for('room.room_view', id_type=room[0])}}" method="post">
+                        <button type="submit" class="btn btn-info">Visualizza</button>
+                    </form>
+                    {% if room[2] > 0 %}
+                    <form hidden action="{{url_for('room.room_view', id_type=room[0])}}" method="post">
+                        <button type="submit" class="btn btn-primary">Acquista</button>
+                    </form>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary" disabled>Acquista</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

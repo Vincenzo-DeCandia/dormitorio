@@ -12,6 +12,7 @@ create table room_type
 (
     id_type     int auto_increment primary key,
     name_type    varchar(20) not null,
+    adults       int not null,
     price        float       not null,
     description  varchar(400) not null
 );
@@ -20,12 +21,11 @@ create table apply_promotion
 (
     id_promotion int not null,
     id_type    int not null,
-    description  varchar(400) not null,
     primary key (id_promotion, id_type),
     constraint FK_promotion_id
-        foreign key (id_promotion) references promotion (id_promotion),
+        foreign key (id_promotion) references promotion (id_promotion) on delete cascade,
     constraint FK_promotion_name_type
-        foreign key (id_type) references room_type (id_type)
+        foreign key (id_type) references room_type (id_type) on delete cascade
 );
 
 create table room
@@ -34,7 +34,7 @@ create table room
         primary key,
     id_type     int not null,
     constraint FK_id_room_type
-        foreign key (id_type) references room_type (id_type)
+        foreign key (id_type) references room_type (id_type) on delete cascade
 );
 
 create table staff
@@ -52,14 +52,15 @@ create table staff
 
 create table cleaning
 (
+    cleaning_id   int auto_increment,
     cleaning_date timestamp not null,
     room_number   char(3)   not null,
-    id_staff      int   not null,
-    primary key (cleaning_date, room_number, id_staff),
+    id_staff      int null,
+    primary key (cleaning_id),
     constraint FK_cleaning_room
-        foreign key (room_number) references room (room_number),
+        foreign key (room_number) references room (room_number) on delete cascade,
     constraint FK_cleaning_staff_id
-        foreign key (id_staff) references staff (id_staff)
+        foreign key (id_staff) references staff (id_staff) on delete set null
 );
 
 create table news
@@ -71,7 +72,7 @@ create table news
     description      varchar(400) not null,
     id_staff          int  null,
     constraint FK_news_id_staff
-        foreign key (id_staff) references staff (id_staff)
+        foreign key (id_staff) references staff (id_staff) on delete set null
 );
 
 create table user
@@ -91,15 +92,15 @@ create table user
 
 create table assistance
 (
+    id_assistance        int auto_increment primary key ,
     assistance_date      datetime not null,
     feedback             int       null,
-    id_staff             int   not null,
-    id_user int  not null,
-    primary key (assistance_date, id_staff, id_user),
+    id_staff             int  null,
+    id_user int  null,
     constraint FK_asst_id_staff
-        foreign key (id_staff) references staff (id_staff),
+        foreign key (id_staff) references staff (id_staff) on delete cascade ,
     constraint FK_asst_id_user
-        foreign key (id_user) references user (id_user)
+        foreign key (id_user) references user (id_user) on delete set null
 );
 
 create table reservation
@@ -111,15 +112,21 @@ create table reservation
     reservation_date     datetime   not null,
     start_date           datetime   null,
     end_date             datetime   null,
-    id_user              int    not null,
-    id_type              int not null,
-    room_number          char(3)     not null,
-    constraint FK_book_id_user
-        foreign key (id_user) references user (id_user),
+    id_type              int  null,
+    room_number          char(3)     null,
     constraint FK_book_id_type
-        foreign key (id_type) references room_type (id_type),
+        foreign key (id_type) references room_type (id_type) on delete set null,
     constraint FK_book_room_number
-        foreign key (room_number) references room (room_number)
+        foreign key (room_number) references room (room_number) on delete set null
+);
+
+create table reservation_user
+(
+    id_user         int not null,
+    id_reservation  int not null,
+    constraint PK_book_user PRIMARY KEY (id_reservation, id_user),
+    constraint FK_reservation FOREIGN KEY (id_reservation) references reservation(id_reservation) on delete cascade,
+    constraint FK_book_user FOREIGN KEY (id_user) references user(id_user) on delete cascade
 );
 
 create table payment
@@ -130,7 +137,7 @@ create table payment
     payment_date   timestamp not null,
     id_reservation int  null,
     constraint FK_payment_id_reservation
-        foreign key (id_reservation) references reservation (id_reservation)
+        foreign key (id_reservation) references reservation (id_reservation) on delete set null
 );
 
 create table review
@@ -143,5 +150,5 @@ create table review
     review_date    timestamp null,
     id_reservation int  null,
     constraint FK_review_id_reservation
-        foreign key (id_reservation) references reservation (id_reservation)
+        foreign key (id_reservation) references reservation (id_reservation) on delete set null
 );

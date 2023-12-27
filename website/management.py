@@ -1,6 +1,6 @@
 from website.files import upload_file
 
-from flask import Blueprint, render_template, request, redirect, jsonify
+from flask import Blueprint, render_template, request
 from website.database import UserDB
 from website.session import get_session, get_role, logged_in, user_id
 
@@ -13,10 +13,24 @@ def manage_room():
     return render_template('manage/manage-room.html', val_session=get_session(), role=get_role())
 
 
-@management.route('/manage-room/number')
+@management.route('/manage-room/number', methods=['POST', 'GET'])
 @logged_in(['reception', 'admin'])
 def manage_room_number():
-    pass
+    if request.method == 'POST' and request.form.get('room-name'):
+        room_number = request.form.getlist('room-number[]')
+        room_name = request.form.get('room-name')
+        id_room = UserDB.query('SELECT id_type FROM room_type WHERE name_type = %s', [room_name])
+        for number in room_number:
+            UserDB.query('INSERT INTO room (room_number, id_type) VALUES (%s,%s)', (number, id_room))
+    elif request.method == 'POST' and request.form.get('mod-room-name'):
+        room_name = request.form.get('mod-room-name')
+        room_number = request.form.get('mod-room-number')
+        UserDB.call_procedure('update_room', (room_name, room_number))
+    elif request.form.get('deleteRoom'):
+        room_number = str(request.form.get('deleteRoom'))
+        UserDB.query('DELETE FROM room WHERE room_number=%s', [room_number])
+    rooms = UserDB.query('SELECT r1.room_number, r2.name_type FROM room r1 JOIN room_type r2 on r2.id_type = r1.id_type order by r1.room_number');
+    return render_template('manage/manage-room-number.html', val_session=get_session(), role=get_role(), room=rooms)
 
 
 @management.route('/manage-room/type', methods=['GET', 'POST'])

@@ -2,9 +2,26 @@
 
 {% block body %}
 
-<a href="/manage-room/type">
-  <img src="{{url_for('static', filename='img/img-room/id-23/1.jpg')}}" class="w-25" alt=""/>
-</a>
-  <img src="{{url_for('static', filename='img/img-room/id-23/1.jpg')}}" class="w-25" alt="" href="/manage-room/number"/>
-
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Aggiungi una nuova camera</h5>
+                    <p class="card-text">Inserisci una nuova camera specificando il tipo, il numero di ospiti, il prezzo e la descrizione</p>
+                    <a href="/manage-room/type" class="btn btn-primary" type=>Clicca qui per aggiungere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Associa il numero della camera</h5>
+                    <p class="card-text">Associa il numero della camera a un tipo disponibile</p>
+                    <a href="/manage-room/number" class="btn btn-primary">Clicca qui per associare</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
