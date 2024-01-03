@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block link_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
 {% block title %}
 Dormitorio UniParthenope
 {% endblock %}

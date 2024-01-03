@@ -11,6 +11,3 @@ def upload_file(file_list, path, _id=None, file_counter=1):
             file.save(os.path.join(path + f'{_id}', file_name))
             file_counter += 1
 
-
-def download_file(path, _id):
-    pass

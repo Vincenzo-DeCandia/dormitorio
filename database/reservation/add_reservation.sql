@@ -1,4 +1,4 @@
-CREATE PROCEDURE add_reservation(IN _check_in_date VARCHAR(10), IN _check_out_date VARCHAR(10), IN _id_user INT, IN _name_type VARCHAR(20))
+CREATE PROCEDURE add_reservation(IN _check_in_date timestamp, IN _check_out_date timestamp, IN _id_user INT, IN _name_type VARCHAR(20))
 BEGIN
     DECLARE id_name INT;
     DECLARE _id_reserv INT;

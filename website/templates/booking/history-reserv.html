@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{%block link_style%}
+<style>
+  html,
+body,
+.intro {
+  height: 100vh;
+}
+
+table td,
+table th {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+thead th {
+  color: #fff;
+}
+
+.card {
+  border-radius: .5rem;
+}
+
+.table-scroll {
+  border-radius: .5rem;
+}
+
+.table-scroll table thead th {
+  font-size: 1.25rem;
+}
+thead {
+  top: 0;
+  position: relative;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<section class="intro">
+  <div class="bg-image h-100" style="background-color: #f5f7fa;">
+    <div class="mask d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px">
+                  <table class="table table-striped mb-0">
+                    <thead>
+      <tr class="table-info border">
+        <th scope="col">Id prenotazione</th>
+        <th scope="col">Data prenotazione</th>
+        <th scope="col">Check in</th>
+        <th scope="col">Check out</th>
+        <th scope="col">Camera prenotata</th>
+        <th scope="col">Prezzo</th>
+        <th scope="col">Stato</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for reservation in reservations %}
+      <tr>
+        <th scope="row">{{reservation[0]}}</th>
+        <td>{{reservation[1]}}</td>
+        <td>{{reservation[2]}}</td>
+        <td>{{reservation[3]}}</td>
+        <td>{{reservation[4]}}</td>
+        <td>{{reservation[5]}}</td>
+        {% if not reservation[6] %}
+        <td><span class="badge rounded-pill text-bg-success">Confermata</span></td>
+        {% else %}
+        <td><span class="badge rounded-pill text-bg-danger">Cancellata</span></td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock %}

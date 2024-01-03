@@ -47,7 +47,10 @@ create table staff
     s_surname     varchar(20) null,
     s_email       varchar(20) unique ,
     s_gender      char        null,
-    role          varchar(15) not null
+    role          varchar(15) not null,
+    phone         varchar(10) not null,
+    secret_key    char(32) not null,
+    access        int      not null
 );
 
 create table cleaning
@@ -151,4 +154,21 @@ create table review
     id_reservation int  null,
     constraint FK_review_id_reservation
         foreign key (id_reservation) references reservation (id_reservation) on delete set null
+);
+
+create table payment_method
+(
+    number_card char(16) not null,
+    id_user     int not null,
+    code        char(3) not null,
+
+    constraint PK_payment_method PRIMARY KEY (number_card, id_user),
+    constraint FK_payment_method_id_user FOREIGN KEY (id_user) references user (id_user) on delete cascade
+);
+
+create table avatar_user
+(
+    name_avatar VARCHAR(100) PRIMARY KEY,
+    id_user int not null,
+    constraint FK_avatar_id_user FOREIGN KEY (id_user) references user(id_user)
 );

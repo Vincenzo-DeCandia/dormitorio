@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import Flask, render_template
 import secrets
 from datetime import timedelta
 from flask_session import Session
@@ -15,17 +15,25 @@ def create_app():
     Session(app)
     socketio = SocketIO(app, cors_allowed_origins="*")
 
+    '''
+    @app.errorhandler(Exception)
+    def page_not_found(error):
+        return 'not found'
+    '''
+
     from .home import home
     from .auth import auth
     from .rooms import rooms
     from .profile import profile
     from .management import management
+    from .payment import payment
 
     app.register_blueprint(home)
     app.register_blueprint(auth)
     app.register_blueprint(rooms)
     app.register_blueprint(profile)
     app.register_blueprint(management)
+    app.register_blueprint(payment)
 
     @socketio.on('disconnect')
     def disconnect_user():

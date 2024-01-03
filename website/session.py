@@ -33,6 +33,7 @@ def get_role():
 
 
 def user_id():
+
     return int(session.get('user_id'))
 
 

@@ -6,13 +6,23 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
     <title> {% block title %} {% endblock %} </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/css-rooms/style.css') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/css-bootstrap/bootstrap.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ext-style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 
+    <style>
+.bg-gra-01 {
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(47, 103, 177, 0.5)), to(rgba(220, 220, 220, 0.5)));
+  background: -webkit-linear-gradient(bottom, rgba(47, 103, 177, 0.5) 0%, rgba(220, 220, 220, 0.5) 100%);
+  background: -moz-linear-gradient(bottom, rgba(47, 103, 177, 0.5) 0%, rgba(220, 220, 220, 0.5) 100%);
+  background: -o-linear-gradient(bottom, rgba(47, 103, 177, 0.5) 0%, rgba(220, 220, 220, 0.5) 100%);
+  background: linear-gradient(to top, rgba(47, 103, 177, 0.5) 0%, rgba(220, 220, 220, 0.5) 100%);
+}
+
+
+
+    </style>
     {% block link_style %} {% endblock %}
 
 
@@ -115,16 +125,12 @@
                     <ul class="dropdown-menu">
 
                     {% if role == 'admin' %}
-                        <li><a class="dropdown-item" href="/staff-register">Registrazione staff</a></li>
-                        <li><a class="dropdown-item" href="/news-management">Gestione notizie</a></li>
+                        <li><a class="dropdown-item" href="/create-user">Creazione staff</a></li>
                         <li><a class="dropdown-item" href="/manage-promotion">Gestione promozioni</a></li>
 
                     {% endif %}
                     {% if role != 'cleaner' %}
-                        <li><a class="dropdown-item" href="/pay-management">Gestione utenti</a></li>
                         <li><a class="dropdown-item" href="/manage-room">Gestione camere</a></li>
-                        <li><a class="dropdown-item" href="/manage-user">Gestione utenti</a></li>
-                        <li><a class="dropdown-item" href="/manage-reservation">Gestione prenotazioni</a></li>
                     {% endif %}
                     {% if role != 'reception' %}
                         <li><a class="dropdown-item" href="/clean-room">Pulizia camere</a></li>
@@ -170,8 +176,8 @@
 
                         {% else %}
 
-                        <li><a class="dropdown-item" href="/settings">Impostazioni</a></li>
-                        <li><a class="dropdown-item" href="/reservation">Storico prenotazioni</a></li>
+                        <li><a class="dropdown-item" href="/mysettings">Impostazioni</a></li>
+                        <li><a class="dropdown-item" href="/history-reservation">Storico prenotazioni</a></li>
                         <li><a class="dropdown-item" href="/mypayments">Storico pagamenti</a></li>
 
                         {% endif %}
@@ -194,7 +200,7 @@
 <!-- End second NavBar -->
 </header>
 
-<div class="container-flex flex-grow-1">
+<div class="container-flex flex-grow-1 bg-gra-01">
     {% block body %} {% endblock %}
 </div>
 

@@ -3,30 +3,59 @@
 {% block body %}
 
 <div class="container mt-5">
-    {% for room in rooms %}
-    <div class="card mb-3 mx-auto" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='img/img-room/id-' + room[0] + '/1.jpg')}}" class="img-fluid rounded-start" alt="...">
+    <div class="row">
+        {% for room in rooms %}
+        <div class="card mb-3 " style="width: 540px;background-color: #b3d7ff">
+          <div class="row g-0">
+            <div class="col-md-4 mt-3">
+              <img src="{{ url_for('static', filename='img/img-room/id-' + room[0] + '/1.jpg')}}" class="card-img-top rounded-start d-flex" alt="Room Image">
             </div>
             <div class="col-md-8">
-                <div class="card-body text-center">
-                    <h5 class="card-title">{{room[1]}}</h5>
-                    <form hidden action="{{url_for('room.room_view', id_type=room[0])}}" method="post">
-                        <button type="submit" class="btn btn-info">Visualizza</button>
-                    </form>
-                    {% if room[2] > 0 %}
-                    <form hidden action="{{url_for('room.room_view', id_type=room[0])}}" method="post">
-                        <button type="submit" class="btn btn-primary">Acquista</button>
-                    </form>
+              <div class="card-body">
+                  <h5 class="card-title" style="color: black; font-weight: bold"><a href="{{url_for('rooms.rooms_view', id_type=room[0])}}">{{room[1]}}</a>
+                  </h5>
+                  <p class="d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" fill="currentColor" class="bi bi-person-standing" viewBox="0 0 16 16">
+                      <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M6 6.75v8.5a.75.75 0 0 0 1.5 0V10.5a.5.5 0 0 1 1 0v4.75a.75.75 0 0 0 1.5 0v-8.5a.25.25 0 1 1 .5 0v2.5a.75.75 0 0 0 1.5 0V6.5a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v2.75a.75.75 0 0 0 1.5 0v-2.5a.25.25 0 0 1 .5 0"/>
+                    </svg>
+                      1 &nbsp
+                      {% if room[2] > 0 %}
+                        <span style="color: green; font-weight: lighter !important;font-size: 1rem">Disponibile</span>
                     {% else %}
-                        <button type="submit" class="btn btn-primary" disabled>Acquista</button>
+                        <span style="color: darkred; font-weight: lighter !important;font-size: 1rem">Esaurita</span>
                     {% endif %}
-                </div>
+                  </p>
+
+
+
+              <div class="card-text d-flex justify-content-end align-items-center">
+                {% if room[4] %}
+
+                  <span style="color: red; margin-right: 1rem"><del>{{room[3]}}€</del></span>
+                  <span style="color: #2f89fc; margin-right: 1rem">{{room[8]}}€</span>
+
+                {% else %}
+
+                  <span style="color: #2f89fc; margin-right: 1rem">{{room[3]}}€</span>
+
+                {% endif %}
+
+
+                {% if room[2] > 0 %}
+                <form action="{{url_for('payment.payment_view', id_room=room[0])}}" method="post">
+                    <button type="submit" class="btn btn-primary">Prenota</button>
+                </form>
+                {% else %}
+                <button type="button" class="btn btn-primary" disabled>Prenota</button>
+                {% endif %}
+              </div>
+
+              </div>
             </div>
+          </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 
 {% endblock %}
