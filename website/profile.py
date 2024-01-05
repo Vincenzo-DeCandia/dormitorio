@@ -6,7 +6,7 @@ from website.database import UserDB
 profile = Blueprint('profile', __name__)
 
 
-@profile.route('/staff-profile')
+@profile.route('/staff-profile', methods=['GET', 'POST'])
 @logged_in(['reception', 'admin', 'cleaner'])
 def staff_profile():
     """
