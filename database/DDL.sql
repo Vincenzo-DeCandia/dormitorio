@@ -114,7 +114,7 @@ create table avatar_staff
     name_avatar varchar(100) not null,
     id_user     int          not null,
     constraint FK_id_user_staff_avatar
-        foreign key (id_user) references staff (id_staff)
+        foreign key (id_user) references staff (id_staff) on delete cascade
 );
 
 create table cleaning
@@ -147,7 +147,7 @@ create table news
 
 create table user
 (
-    id_user              int         not null
+    id_user              int         not null auto_increment
         primary key,
     matriculation_number char(10)    not null,
     email                varchar(20) null,
@@ -171,7 +171,7 @@ create table avatar_user
     name_avatar varchar(100) not null,
     id_user     int          not null,
     constraint FK_avatar_id_user
-        foreign key (id_user) references user (id_user)
+        foreign key (id_user) references user (id_user) on delete cascade
 );
 
 create table payment_method

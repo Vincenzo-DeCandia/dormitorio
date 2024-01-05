@@ -20,11 +20,11 @@ def staff_profile():
         avatar = request.files['avatar']
         filename = avatar.filename
         avatar.save(os.path.join('website/static/img/avatar-staff/id-' + str(user_id()), filename))
-        UserDB.query('UPDATE avatar_staff SET name_avatar=%s WHERE id_user=%s', (avatar.filename, user_id()))
+        UserDB.query('INSERT INTO avatar_staff (id_avatar, name_avatar, id_user) VALUES (0, %s, %s)', (avatar.filename, user_id()))
 
     # Retrieve user information and avatar details from the database
     staff = UserDB.query('SELECT s_name, s_surname, s_email, s_fiscal_code, phone, role, s_gender FROM staff WHERE id_staff = %s', [user_id()])
-    name_avatar = UserDB.query('SELECT name_avatar FROM avatar_staff WHERE id_user=%s', [user_id()])
+    name_avatar = UserDB.query('SELECT name_avatar FROM avatar_staff WHERE id_user=%s ORDER BY id_avatar desc', [user_id()])
     path_avatar = 'img/avatar-staff/id-' + str(user_id()) + '/' + name_avatar[0][0]
 
     return render_template('profile-staff.html', val_session=get_session(), role=get_role(), staff=staff[0], path_avatar=path_avatar)
@@ -43,13 +43,14 @@ def user_profile():
         avatar = request.files['avatar']
         filename = avatar.filename
         avatar.save(os.path.join('website/static/img/avatar/id-' + str(user_id()), filename))
-        UserDB.query('UPDATE avatar_user SET name_avatar=%s WHERE id_user=%s', (avatar.filename, user_id()))
+        UserDB.query('INSERT INTO avatar_user (id_avatar, name_avatar, id_user) VALUES (0, %s, %s)', (avatar.filename, user_id()))
 
     # Retrieve user information and avatar details from the database
     user = UserDB.query(
         'SELECT matriculation_number, email, fiscal_code, name, surname, gender FROM user WHERE id_user=%s',
         [user_id()])
-    name_avatar = UserDB.query('SELECT name_avatar FROM avatar_user WHERE id_user=%s', [user_id()])
+    name_avatar = UserDB.query('SELECT name_avatar FROM avatar_user WHERE id_user=%s ORDER BY id_avatar desc', [user_id()])
+    print(name_avatar)
     path_avatar = 'img/avatar/id-' + str(user_id()) + '/' + name_avatar[0][0]
 
     return render_template('profile-user.html', val_session=get_session(), role=get_role(), user=user[0], path_avatar=path_avatar)
