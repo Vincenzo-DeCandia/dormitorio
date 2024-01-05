@@ -200,3 +200,4 @@ create table reservation_user
         foreign key (id_reservation) references reservation (id_reservation)
             on delete cascade
 );
+

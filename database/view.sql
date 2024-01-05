@@ -1,23 +1,23 @@
-create definer = admin@localhost view view_promotion as
-select `p`.`id_promotion`     AS `id_promotion`,
-       `p`.`promotion_name`   AS `promotion_name`,
-       `p`.`p_start_date`     AS `p_start_date`,
-       `p`.`p_end_date`       AS `p_end_date`,
-       `p`.`percent_discount` AS `percent_discount`,
-       `r`.`name_type`        AS `name_type`
-from ((`dormitory`.`promotion` `p` join `dormitory`.`apply_promotion` `a`
-       on ((`p`.`id_promotion` = `a`.`id_promotion`))) join `dormitory`.`room_type` `r`
-      on ((`a`.`id_type` = `r`.`id_type`)));
+DELIMITER //
 
-create definer = admin@localhost view view_room_not_cleaned as
-select `l`.`room_number` AS `room_number`
-from ((select `dormitory`.`reservation`.`room_number`         AS `room_number`,
-              max(`dormitory`.`reservation`.`check_out_date`) AS `max(check_out_date)`
-       from `dormitory`.`reservation`
-       where (now() >= `dormitory`.`reservation`.`check_out_date`)
-       group by `dormitory`.`reservation`.`room_number`) `l` left join (select `dormitory`.`cleaning`.`room_number`        AS `room_number`,
-                                                                               max(`dormitory`.`cleaning`.`cleaning_date`) AS `max(cleaning_date)`
-                                                                        from `dormitory`.`cleaning`
-                                                                        group by `dormitory`.`cleaning`.`room_number`) `p`
-      on ((`p`.`room_number` = `l`.`room_number`)))
-where (`p`.`room_number` is null);
+CREATE VIEW view_promotion as
+SELECT p.id_promotion, p.promotion_name, p.p_start_date, p.p_end_date, p.percent_discount, r.name_type
+FROM
+(promotion p
+JOIN apply_promotion a on p.id_promotion = a.id_promotion
+JOIN room_type r on a.id_type = r.id_type);
+
+CREATE VIEW view_room_not_cleaned AS
+SELECT r.room_number
+FROM
+(SELECT r.room_number, max(check_out_date) as max_check_out
+FROM reservation r
+GROUP BY r.room_number) r
+LEFT JOIN
+(SELECT c.room_number, max(cleaning_date) as max_clean_date
+FROM cleaning c
+GROUP BY c.room_number
+) c on r.room_number = c.room_number
+WHERE c.max_clean_date is null or r.max_check_out > c.max_clean_date and max_check_out <= now();
+
+delimiter ;

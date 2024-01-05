@@ -12,4 +12,3 @@ GROUP BY c.room_number
 WHERE c.max_clean_date is null or r.max_check_out > c.max_clean_date and max_check_out <= now();
 
 
-SELECT name_avatar FROM avatar_staff WHERE id_user=1
