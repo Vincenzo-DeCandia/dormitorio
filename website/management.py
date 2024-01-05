@@ -177,7 +177,7 @@ def create_user():
             os.mkdir('website/static/img/avatar-staff/id-' + staff_id)
             shutil.copy('website/static/img/avatar-staff/default.webp',
                         'website/static/img/avatar-staff/id-' + staff_id + '/default.webp')
-            UserDB.query('INSERT INTO avatar_staff (name_avatar, id_user) VALUES (%s, %s)',
+            UserDB.query('INSERT INTO avatar_staff (id_avatar, name_avatar, id_user) VALUES (0, %s, %s)',
                          ('default.webp', int(staff_id)))
             flash('User successfully created', 'alert-success')
 
