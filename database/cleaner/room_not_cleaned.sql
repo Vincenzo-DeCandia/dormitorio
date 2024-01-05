@@ -1,13 +1,15 @@
 CREATE VIEW view_room_not_cleaned AS
-SELECT l.room_number
+SELECT r.room_number
 FROM
-(SELECT room_number, max(check_out_date) -- CAMERE LIBERE
-FROM reservation
-WHERE NOW() >= check_out_date
-GROUP BY room_number) l
+(SELECT r.room_number, max(check_out_date) as max_check_out
+FROM reservation r
+GROUP BY r.room_number) r
 LEFT JOIN
-(SELECT room_number, max(cleaning_date) -- CAMERE GIA' PULITE
-FROM cleaning
-GROUP BY room_number) p ON p.room_number = l.room_number
-WHERE p.room_number is null;
+(SELECT c.room_number, max(cleaning_date) as max_clean_date
+FROM cleaning c
+GROUP BY c.room_number
+) c on r.room_number = c.room_number
+WHERE c.max_clean_date is null or r.max_check_out > c.max_clean_date and max_check_out <= now();
 
+
+SELECT name_avatar FROM avatar_staff WHERE id_user=1

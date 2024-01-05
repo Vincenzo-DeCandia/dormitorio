@@ -112,6 +112,7 @@ padding: 24px 1rem !important;
 {% endblock %}
 
 {% block body %}
+<form method="post" action="{{url_for('payment.payment_view', id_room=id_room, check_in=check_in, check_out=check_out)}}">
 <div class="container-fluid d-flex justify-content-center mt-5 mb-5">
 
     <div class="row g-3">
@@ -238,7 +239,7 @@ padding: 24px 1rem !important;
             <hr class="mt-0 line">
 
             <div class="p-3">
-                <button class="btn btn-primary btn-block">Effettua pagamento</button>
+                <button value="pay" name="pay" type="submit" class="btn btn-primary btn-block">Effettua pagamento</button>
             </div>
 
         </div>
@@ -247,7 +248,7 @@ padding: 24px 1rem !important;
     </div>
 
 </div>
-
+</form>
 
 
 {% endblock %}

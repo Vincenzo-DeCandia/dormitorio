@@ -4,5 +4,5 @@ BEGIN
     FROM room_type r
     LEFT JOIN apply_promotion p1 on r.id_type = p1.id_type
     LEFT JOIN promotion p2 on p1.id_promotion = p2.id_promotion
-    WHERE r.id_type = id_room and p2.p_start_date <= now() and p2.p_end_date >= now();
+    WHERE r.id_type = id_room or (p2.p_start_date <= now() and p2.p_end_date >= now() and r.id_type=id_room and p1.id_promotion is not null);
 end;

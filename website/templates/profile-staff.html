@@ -28,7 +28,7 @@ background: linear-gradient(to right bottom,rgba(28, 103, 184, 0.67),rgba(28, 10
                 <a data-bs-toggle="modal" data-bs-target="#avatarModal">
                   <img src="{{url_for('static', filename=path_avatar)}}" alt="Avatar" class="img-fluid my-5" style="width: 80px;">
                 </a>
-                <h5>{{user[3]}} {{user[4]}}</h5>
+                <h5>{{staff[0]}} {{staff[1]}}</h5>
 
               </div>
               <div class="col-md-8">
@@ -38,32 +38,37 @@ background: linear-gradient(to right bottom,rgba(28, 103, 184, 0.67),rgba(28, 10
                   <div class="row pt-1">
                     <div class="col-6 mb-3">
                       <h6>Nome</h6>
-                      <p class="text-muted">{{user[3]}}</p>
+                      <p class="text-muted">{{staff[0]}}</p>
                     </div>
                     <div class="col-6 mb-3">
                       <h6>Cognome</h6>
-                      <p class="text-muted">{{user[4]}}</p>
+                      <p class="text-muted">{{staff[1]}}</p>
                     </div>
                   </div>
                   <div class="row pt-1">
                     <div class="col-6 mb-3">
                       <h6>Email</h6>
-                      <p class="text-muted">{{user[1]}}</p>
+                      <p class="text-muted">{{staff[2]}}</p>
                     </div>
                     <div class="col-6 mb-3">
                       <h6>Codice fiscale</h6>
-                      <p class="text-muted">{{user[2]}}</p>
+                      <p class="text-muted">{{staff[3]}}</p>
                     </div>
                   </div>
                   <div class="row pt-1">
                     <div class="col-6 mb-3">
-                      <h6>Sesso</h6>
-                      <p class="text-muted">{{user[5]}}</p>
+                      <h6>Telefono</h6>
+                      <p class="text-muted">{{staff[4]}}</p>
                     </div>
                     <div class="col-6 mb-3">
-                        <h6>Matricola</h6>
-                        <p class="text-muted">{{user[0]}}</p>
-                      </div>
+                        <h6>Ruolo</h6>
+                        <p class="text-muted text-uppercase">{{staff[5]}}</p>
+                  </div>
+                  <div class="row pt-1">
+                    <div class="col-6 mb-3">
+                      <h6>Sesso</h6>
+                      <p class="text-muted text-uppercase">{{staff[6]}}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -73,10 +78,11 @@ background: linear-gradient(to right bottom,rgba(28, 103, 184, 0.67),rgba(28, 10
       </div>
     </div>
   </div>
+</div>
 
 
 
-<form action="{{url_for('profile.user_profile')}}" method="post" enctype="multipart/form-data">
+<form action="{{url_for('profile.staff_profile')}}" method="post" enctype="multipart/form-data">
   <!-- Modal -->
   <div class="modal fade" id="avatarModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -99,4 +105,5 @@ background: linear-gradient(to right bottom,rgba(28, 103, 184, 0.67),rgba(28, 10
     </div>
   </div>
 </form>
+
 {% endblock %}

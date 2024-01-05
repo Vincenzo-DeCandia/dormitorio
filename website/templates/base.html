@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <link rel="manifest" href="{{url_for('static', filename='manifest.json')}}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ url_for('static', filename='img/image-default.png') }}">
+    <meta name="theme-color" content="white"/>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
     <title> {% block title %} {% endblock %} </title>
-
+    <link>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/css-bootstrap/bootstrap.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ext-style.css') }}">
@@ -25,21 +28,38 @@
     </style>
     {% block link_style %} {% endblock %}
 
+{% if sw_enabled %}
+    <script>
+    window.onload = () => {
+        'use strict';
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function (registration) {
+                    console.log('Service Worker registrato con successo:', registration);
+                })
+                .catch(function (error) {
+                    console.log('Errore durante la registrazione del Service Worker:', error);
+                });
+        }
+    }
+    </script>
+{% endif %}
 
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
 <nav class="navbar navbar-expand-lg transparent-navbar">
-    <div class="container" style="border-bottom-color: #0b0b0b">
-        <div class="d-inline-flex gap-2" style="margin-left: 1rem">
-            <a class="navbar-brand" href="#" onclick="checkResolution('telephone')">
+    <div class="container d-flex justify-content-between" style="border-bottom-color: #0b0b0b">
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand" href="tel://0815476660">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
                     <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
                 </svg>
                 <span id="telephone" class="d-none d-md-inline" style="font-size: 0.85rem">081 547 6660</span>
             </a>
 
-            <a class="navbar-brand mx-auto" href="#" onclick="checkResolution('position')">
+            <a class="navbar-brand mx-auto" href="https://www.google.com/maps/place//data=!4m2!3m1!1s0x133b081b0e8aa9b5:0x8903611ab0cc3fbc?sa=X&ved=2ahUKEwjLgN6O-sSDAxXs9gIHHfmeCIUQ4kB6BAg5EAA">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
                     <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
                     <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -50,48 +70,8 @@
 
 
 
-        <!-- The Modal Telephone -->
-        <div class="modal" id="modalTelephone">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h6 class="modal-title">Telephone: 333-333-3333</h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="checkResolution('telephoneClose')"></button>
-                    </div>
 
 
-                </div>
-            </div>
-        </div>
-
-
-
-        <!-- The Modal Position -->
-        <div class="modal" id="modalPosition">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h6 class="modal-title">Position: </h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="checkResolution('positionClose')"></button>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <div class="d-flex gap-2" style="margin-right: 1rem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
-                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
-                </svg>
-        </div>
     </div>
 </nav>
 
@@ -108,6 +88,9 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{{url_for('home.search')}}">Prenota</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/rooms">Camere</a>
@@ -166,16 +149,14 @@
                         </svg>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/profile">Profilo</a></li>
 
                         {% if role != 'user' %}
-
-                        <li><a class="dropdown-item" href="/settings">Impostazioni</a></li>
-                        <li><a class="dropdown-item" href="#"></a></li>
+                        <li><a class="dropdown-item" href="/staff-profile">Profilo</a></li>
+                        <li><a class="dropdown-item" href="/staff-settings">Impostazioni</a></li>
 
 
                         {% else %}
-
+                        <li><a class="dropdown-item" href="/profile">Profilo</a></li>
                         <li><a class="dropdown-item" href="/mysettings">Impostazioni</a></li>
                         <li><a class="dropdown-item" href="/history-reservation">Storico prenotazioni</a></li>
                         <li><a class="dropdown-item" href="/mypayments">Storico pagamenti</a></li>
@@ -213,7 +194,7 @@
             <img alt="" src="{{url_for('static', filename='img/img-index/logo-parthenope.png')}}" width="30" height="30">
           </a>
           <span class="mb-3 mb-md-0 text-body-secondary">© 2023 UniParthenope</span>
-    </div>
+        </div>
     <ul class="nav d-flex col-md-4 justify-content-end list-unstyled">
       <li class="ms-3"><a class="text-body-secondary" href="#">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
@@ -242,17 +223,6 @@
 <script src="{{ url_for('static', filename='js/js-bootstrap/bootstrap.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/ext-js.js') }}"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-
-<script type="text/javascript" charSet="utf-8">
-    const socket = io.connect('http://localhost:5000')
-    window.addEventListener('beforeunload', function() {
-            // Invia un messaggio di disconnessione prima della chiusura del browser
-            socket.emit('disconnectMessage', 'Sto chiudendo il browser');
-        });
-
-
-</script>
 
 
     {% block script_body %} {% endblock %}
